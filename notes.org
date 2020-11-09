@@ -1,0 +1,35 @@
+#+title: JETSON AGX XAVIER installation
+#+subtitle: team <symphony>
+#+date: <2020-11-08 Sun 11:00>
+#+tags: python, bash, elisp, lisp, jetson
+#+property: header-args:bash :results verbatim
+#+property: header-args:elisp :exports both
+#+property: header-args:ipython :session jetson :tangle "jetson-install.py" :exports both
+#+OPTIONS: toc:1
+#+options: num:1 
+#+author: srolisp
+
+* 준비물 
+
+** BOOT LOADER 용 usb 메모리 스틱
+
+** 외부저장 장치
+
+** JETSON용 주변기기 
+- [ ] 모니터
+- [ ] 유선 키보드
+- [ ] 마우스
+- [ ] 카메라
+- [ ] M.2 SSD NVME 1TB or higher
+  
+* 외부저장 장치에 ubuntu 설치하기
+JETSON 을 구동시키려면 일단 우분투 시스템이 필요하다. 맥북에 부트캠프로 윈도우즈와 같이 쓰고 있는데 용량부족으로 트리플 구동은 힘들다. 파티션도 다시 설정해야하고 각각 쓰기 위한 용량이 타이트하다. 대안으로 외장 하드에 우분투를 설치하고 인스톨하려고 시도해본다.
+
+** boot loader 용 usb 만들기
+돌아다니던 usb들이 도통 안보여서 다이소에서 16GB SANDISK USB 를 5,000원에 구입
+- https://www.balena.io/etcher/
+- iso 파일 선택
+- boot loader 로 쓸 usb 선택
+- flash!
+
+** 
