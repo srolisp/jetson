@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-11-09 Mon 16:26 -->
+<!-- 2020-11-11 Wed 01:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>JETSON AGX XAVIER installation</title>
@@ -250,54 +250,95 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgdb65414">1. 준비물</a></li>
-<li><a href="#org63e6f8a">2. 외부저장 장치에 ubuntu 설치하기</a></li>
+<li><a href="#orgf35651a">1. 준비물</a></li>
+<li><a href="#orge15cc78">2. 외부저장 장치에 ubuntu 설치하기</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgdb65414" class="outline-2">
-<h2 id="orgdb65414"><span class="section-number-2">1</span> 준비물</h2>
+<div id="outline-container-orgf35651a" class="outline-2">
+<h2 id="orgf35651a"><span class="section-number-2">1</span> 준비물</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org4e2f931" class="outline-3">
-<h3 id="org4e2f931">BOOT LOADER 용 usb 메모리 스틱</h3>
+<div id="outline-container-org170bd87" class="outline-3">
+<h3 id="org170bd87">BOOT LOADER 용 usb 메모리 스틱</h3>
 </div>
 
-<div id="outline-container-orgd7c1fa0" class="outline-3">
-<h3 id="orgd7c1fa0">외부저장 장치</h3>
+<div id="outline-container-org9c7ef5a" class="outline-3">
+<h3 id="org9c7ef5a">외부저장 장치</h3>
 </div>
 
-<div id="outline-container-org692a527" class="outline-3">
-<h3 id="org692a527">JETSON용 주변기기</h3>
-<div class="outline-text-3" id="text-org692a527">
+<div id="outline-container-orgb1dad13" class="outline-3">
+<h3 id="orgb1dad13">JETSON용 주변기기</h3>
+<div class="outline-text-3" id="text-orgb1dad13">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> 모니터</li>
 <li class="off"><code>[&#xa0;]</code> 유선 키보드</li>
 <li class="off"><code>[&#xa0;]</code> 마우스</li>
 <li class="off"><code>[&#xa0;]</code> 카메라</li>
+<li class="off"><code>[&#xa0;]</code> M.2 SSD NVME 1TB or higher</li>
 </ul>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org63e6f8a" class="outline-2">
-<h2 id="org63e6f8a"><span class="section-number-2">2</span> 외부저장 장치에 ubuntu 설치하기</h2>
+<div id="outline-container-orge15cc78" class="outline-2">
+<h2 id="orge15cc78"><span class="section-number-2">2</span> 외부저장 장치에 ubuntu 설치하기</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 JETSON 을 구동시키려면 일단 우분투 시스템이 필요하다. 맥북에 부트캠프로 윈도우즈와 같이 쓰고 있는데 용량부족으로 트리플 구동은 힘들다. 파티션도 다시 설정해야하고 각각 쓰기 위한 용량이 타이트하다. 대안으로 외장 하드에 우분투를 설치하고 인스톨하려고 시도해본다.
 </p>
 </div>
 
-<div id="outline-container-org8380b5f" class="outline-3">
-<h3 id="org8380b5f">boot loader</h3>
+<div id="outline-container-org18b9655" class="outline-3">
+<h3 id="org18b9655">boot loader 용 usb 만들기</h3>
+<div class="outline-text-3" id="text-org18b9655">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-09 Mon 16:00&gt;</span></span>
+돌아다니던 usb들이 도통 안보여서 다이소에서 16GB SANDISK USB 를 5,000원에 구입
+</p>
+<ul class="org-ul">
+<li><a href="https://www.balena.io/etcher/">https://www.balena.io/etcher/</a></li>
+<li>iso 파일 선택</li>
+<li>boot loader 로 쓸 usb 선택</li>
+<li>flash!</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd3633d6" class="outline-3">
+<h3 id="orgd3633d6">Install ubuntu 18.04.5 on external hard drive using boot loader efi</h3>
+<div class="outline-text-3" id="text-orgd3633d6">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-10 Tue 00:00&gt;</span></span>-<span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-11 Wed 00:30&gt;</span></span>
+쉬운게 없는듯. 잘 읽고 그대로 하면 된다. 안된다고 다른 문서 찾아가 반복하길 여러번.
+이문서대로 설치하되 안되는 부분은 아래 참조해서 하면 잘 설치될 것이다!
+</p>
+<ul class="org-ul">
+<li><p>
+<a href="https://florisvanbreugel.wordpress.com/2018/03/23/installing-ubuntu-on-an-external-ssd-drive-on-a-macbook/">https://florisvanbreugel.wordpress.com/2018/03/23/installing-ubuntu-on-an-external-ssd-drive-on-a-macbook/</a>
+</p>
+
+<p>
+링크따라 순서대로 설치하면 된다.
+</p></li>
+<li>external drive 파티션 나눌때 잘 몰라서 bootloader용 파티션은 1gb로 잡고 나머지는 EmptyDrive로 설정</li>
+<li>linux-swap 파티션 사이즈는 8192mb로 잡았다.</li>
+<li>wifi 설정은 나중에 해도 된다.</li>
+<li>sudo chroot /mnt 이후에 grub-mkstandalone 에서 에러가 난다.
+apt써서 패키지 설치하려면 인터넷이 연결되있어야한다. 지금쯤 ubuntu는 설치된 상태니 우측 상단 아이콘 클릭해서 와이파이 잡힌걸 선택해서 연결한다.
+/mnt가 루트인 상태에서 sudo apt update 후
+sudo apt install grub-efi-amd64-bin 실행했다.
+그후에 grub-mkstandalone -o boot.efi -d usr/lib/grub/x86<sub>64</sub>-efi -O x86<sub>64</sub>-efi &#x2013;compress=xz boot/grub/grub.cfg</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2020-11-08 Sun 11:00</p>
 <p class="author">Author: srolisp</p>
-<p class="date">Created: 2020-11-09 Mon 16:26</p>
+<p class="date">Created: 2020-11-11 Wed 01:06</p>
 </div>
 </body>
 </html>
