@@ -17,10 +17,10 @@
 
 ** JETSON용 주변기기 
 - [ ] 모니터
-- [ ] 유선 키보드
-- [ ] 마우스
+- [X] 유선 키보드
+- [X] 마우스
 - [ ] 카메라
-- [ ] M.2 SSD NVME 1TB or higher
+- [X] M.2 SSD NVME 1TB or higher
   
 * 외부저장 장치에 ubuntu 설치하기
 JETSON 을 구동시키려면 일단 우분투 시스템이 필요하다. 맥북에 부트캠프로 윈도우즈와 같이 쓰고 있는데 용량부족으로 트리플 구동은 힘들다. 파티션도 다시 설정해야하고 각각 쓰기 위한 용량이 타이트하다. 대안으로 외장 하드에 우분투를 설치하고 인스톨하려고 시도해본다.
@@ -51,3 +51,19 @@ JETSON 을 구동시키려면 일단 우분투 시스템이 필요하다. 맥북
 
 
 * TODO 우분투에 JETSON 설치파일들을 받아놓고 세팅해놓자.
+
+** wd blue m.2 2280 ssd 1tb를 오프라인으로 중고로 구입했는데 sata(b+m key) 였다. agx는 pcie 타입(m key)이다. 삽질..
+휴대용 ssd 로 써야겠다.
+
+** 쿠팡에서 sn750 m.2 2280 nvme 를 구입. 내일 <2020-11-12 Thu> 도착 예정
+
+** 당근마켓에서 15,000원에 *usb* 키보드와 마우스 구입
+
+** TODO 모니터는 내일 사무실에서 가져와야겠다. 차로 출근할 것
+
+** Install JetPack SDK
+<2020-11-11 Wed 22:00>
+- https://developer.nvidia.com/embedded/jetpack
+  host computer 에서 sdkmanager 를 통해 nvidia 클라우드에서 데이터를 다운받아 설치, 관리한다.
+- https://docs.nvidia.com/sdk-manager/install-with-sdkm-jetson/index.html
+  sdkmanager doc
