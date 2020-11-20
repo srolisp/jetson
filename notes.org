@@ -67,3 +67,28 @@ JETSON 을 구동시키려면 일단 우분투 시스템이 필요하다. 맥북
   host computer 에서 sdkmanager 를 통해 nvidia 클라우드에서 데이터를 다운받아 설치, 관리한다.
 - https://docs.nvidia.com/sdk-manager/install-with-sdkm-jetson/index.html
   sdkmanager doc
+
+
+
+* TODO JETSON 언박싱 하려했으나 모니터 케이블 부재로 하루 연기
+
+
+* restore when failed to boot by nvme ssd
+
+** prerequisites
+installed total files by sdkmanager on host
+
+** ~~~/linux..
+./flash.sh jetson-xavier mmcblk0p1
+
+** on javier
+sudo parted /dev/nvme0n1
+(parted) mklabel gpt
+(parted) mkpart primary 2048s 100%
+(parted) quit
+
+sudo mkfs.ext4 /dev/nvme0n1p1
+sudo blkid /dev/nvme0n1p1
+# clone emmc to ssd
+sudo dd if=/dev/mmcblk0p1 of=/dev/nvme0n1p1
+
