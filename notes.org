@@ -11,15 +11,19 @@
 
 * 준비물 
 
-** BOOT LOADER 용 usb 메모리 스틱
-
-** 외부저장 장치
-
-** JETSON용 주변기기 
-- [ ] 모니터
+** DONE BOOT LOADER 용 usb 메리모 스틱
+   wd nvme sata 1tb
+   
+** DONE 외부저장 장치
+   wd nvme m.2 pcie 1tb
+   
+** TODO JETSON용 주변기 기
+- [X] 모니터
 - [X] 유선 키보드
 - [X] 마우스
 - [ ] 카메라
+  + sony x3000r 기존것 활용가능한지 구글링
+  + 로지텍 c920 알아보는중
 - [X] M.2 SSD NVME 1TB or higher
   
 * 외부저장 장치에 ubuntu 설치하기
@@ -76,19 +80,37 @@ JETSON 을 구동시키려면 일단 우분투 시스템이 필요하다. 맥북
 * restore when failed to boot by nvme ssd
 
 ** prerequisites
-installed total files by sdkmanager on host
+   installed total files by sdkmanager on host
 
-** ~~~/linux..
-./flash.sh jetson-xavier mmcblk0p1
-
+** restore eMMC first
+   /home/srolisp/nvidia/nvidia_sdk/JetPack_4.4.1_Linux_JETSON_AGX_XAVIER/Linux_for_Tegra/
+   ./flash.sh jetson-xavier mmcblk0p1
+   emmc로 부팅해서 인스톨 과정을 마치자.
+   
 ** on javier
-sudo parted /dev/nvme0n1
-(parted) mklabel gpt
-(parted) mkpart primary 2048s 100%
-(parted) quit
+   fck -f /dev/nvme0n1p1 이나 desktop에서 disks에서 check, repair를
+   해서 점검하자.  dd후에 검사할 것. nvme에 문제가 있는지 resize2fs가
+   안되는 경우가 있다. 이유는 잘 모르겠다. 검사해서 발견된 부분들을
+   수정하면 정상적으로 된긴 한다. 찝찝하지만..
+   #+begin_src bash
+     sudo parted /dev/nvme0n1
+     (parted) mklabel gpt
+     (parted) mkpart primary 2048s 100%
+     (parted) quit
 
-sudo mkfs.ext4 /dev/nvme0n1p1
-sudo blkid /dev/nvme0n1p1
-# clone emmc to ssd
-sudo dd if=/dev/mmcblk0p1 of=/dev/nvme0n1p1
+     sudo mkfs.ext4 /dev/nvme0n1p1
+     sudo blkid /dev/nvme0n1p1
+     # clone emmc to ssd
+     sudo dd if=/dev/mmcblk0p1 of=/dev/nvme0n1p1
+   #+end_src
 
+** resize2fs /dev/nvme0n1p1 on javier
+
+** 호스트와 usb로 연결 및 인터넷 연결, 부팅시켜놓고
+   호스트에서 sdkmanager실행후 3단계에서 OS flash부분은 제외시키고
+   sdk부분 설치 진행한다. 192.168.55.1에 연결 할 id와 password를
+   입력하라고 나오는데 앞서 인스톨 과정에 입력한 걸 넣는다.
+
+** sudo apt-get update
+   sudo apt-get upgrade는 하지말자. 버전 호환성 문제가 있는지
+   머리아파진다.
