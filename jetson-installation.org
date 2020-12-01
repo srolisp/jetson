@@ -78,7 +78,8 @@
 
 * DONE JETSON 언박싱 하려했으나 모니터 케이블 부재로 하루 연기
 
-* restore when failed to boot by nvme ssd
+* BOOT by nvme ssd
+  restore when failed to boot by nvme ssd
 
 ** prerequisites
    installed total files by sdkmanager on host
