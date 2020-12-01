@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-12-01 화 16:46 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JETSON AGX XAVIER installation</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="srolisp" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">JETSON AGX XAVIER installation
+<br />
+<span class="subtitle">team &lt;symphony&gt;</span>
+</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orga02cdae">1. 준비물</a></li>
+<li><a href="#org40bed2a">2. 외부저장 장치에 ubuntu 설치하기</a></li>
+<li><a href="#org86393fd">3. <span class="done DONE">DONE</span> 우분투에 JETSON 설치파일들을 받아놓고 세팅해놓자.</a></li>
+<li><a href="#org4b33705">4. <span class="done DONE">DONE</span> JETSON 언박싱 하려했으나 모니터 케이블 부재로 하루 연기</a></li>
+<li><a href="#orgaab4b93">5. BOOT by nvme ssd</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga02cdae" class="outline-2">
+<h2 id="orga02cdae"><span class="section-number-2">1</span> 준비물</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orga595ea9" class="outline-3">
+<h3 id="orga595ea9"><span class="done DONE">DONE</span> BOOT LOADER 용 usb 메리모 스틱</h3>
+<div class="outline-text-3" id="text-orga595ea9">
+<p>
+wd nvme sata 1tb
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaf5ac16" class="outline-3">
+<h3 id="orgaf5ac16"><span class="done DONE">DONE</span> 외부저장 장치</h3>
+<div class="outline-text-3" id="text-orgaf5ac16">
+<p>
+wd nvme m.2 pcie 1tb
+</p>
+</div>
+</div>
+
+<div id="outline-container-org92f621d" class="outline-3">
+<h3 id="org92f621d"><span class="todo TODO">TODO</span> JETSON용 주변기기</h3>
+<div class="outline-text-3" id="text-org92f621d">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 모니터</li>
+<li class="on"><code>[X]</code> 유선 키보드</li>
+<li class="on"><code>[X]</code> 마우스</li>
+<li class="off"><code>[&#xa0;]</code> 카메라
+<ul class="org-ul">
+<li>sony x3000r 기존것 활용가능한지 구글링</li>
+<li>로지텍 c920 알아보는중</li>
+</ul></li>
+<li class="on"><code>[X]</code> M.2 SSD NVME 1TB or higher</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org40bed2a" class="outline-2">
+<h2 id="org40bed2a"><span class="section-number-2">2</span> 외부저장 장치에 ubuntu 설치하기</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+JETSON 을 구동시키려면 일단 우분투 시스템이 필요하다. 맥북에
+부트캠프로 윈도우즈와 같이 쓰고 있는데 용량부족으로 트리플 구동은
+힘들다. 파티션도 다시 설정해야하고 각각 쓰기 위한 용량이
+타이트하다. 대안으로 외장 하드에 우분투를 설치하고 인스톨하려고
+시도해본다.
+</p>
+</div>
+
+<div id="outline-container-orgd708ecf" class="outline-3">
+<h3 id="orgd708ecf">boot loader 용 usb 만들기</h3>
+<div class="outline-text-3" id="text-orgd708ecf">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-09 월 16:00&gt;</span></span>
+돌아다니던 usb들이 도통 안보여서 다이소에서 16GB SANDISK USB 를 5,000원에 구입
+</p>
+<ul class="org-ul">
+<li><a href="https://www.balena.io/etcher/">https://www.balena.io/etcher/</a></li>
+<li>iso 파일 선택(18.04까지 지원해서 이버전(lts)으로 다운받아 놨다)</li>
+<li>boot loader 로 쓸 usb 선택</li>
+<li>flash!</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgaa33187" class="outline-3">
+<h3 id="orgaa33187">Install ubuntu 18.04.5 on external hard drive using boot loader efi</h3>
+<div class="outline-text-3" id="text-orgaa33187">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-10 화 00:00&gt;</span></span>-<span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-11 수 00:30&gt;</span></span>
+쉬운게 없는듯. 잘 읽고 그대로 하면 된다. 안된다고 다른 문서 찾아가 반복하길 여러번.
+이문서대로 설치하되 안되는 부분은 아래 참조해서 하면 잘 설치될 것이다!
+</p>
+<ul class="org-ul">
+<li><p>
+<a href="https://florisvanbreugel.wordpress.com/2018/03/23/installing-ubuntu-on-an-external-ssd-drive-on-a-macbook/">https://florisvanbreugel.wordpress.com/2018/03/23/installing-ubuntu-on-an-external-ssd-drive-on-a-macbook/</a>
+</p>
+
+<p>
+링크따라 순서대로 설치하면 된다.
+</p></li>
+<li>external drive 파티션 나눌때 잘 몰라서 bootloader용 파티션은 1gb로 잡고 나머지는 EmptyDrive로 설정</li>
+<li>linux-swap 파티션 사이즈는 8192mb로 잡았다.</li>
+<li>wifi 설정은 나중에 해도 된다.</li>
+<li>sudo chroot /mnt 이후에 grub-mkstandalone 에서 에러가 난다.
+apt써서 패키지 설치하려면 인터넷이 연결되있어야한다. 지금쯤 ubuntu는 설치된 상태니 우측 상단 아이콘 클릭해서 와이파이 잡힌걸 선택해서 연결한다.
+/mnt가 루트인 상태에서 sudo apt update 후
+sudo apt install grub-efi-amd64-bin 실행했다.
+그후에 grub-mkstandalone -o boot.efi -d usr/lib/grub/x86<sub>64</sub>-efi -O x86<sub>64</sub>-efi &#x2013;compress=xz boot/grub/grub.cfg</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org86393fd" class="outline-2">
+<h2 id="org86393fd"><span class="section-number-2">3</span> <span class="done DONE">DONE</span> 우분투에 JETSON 설치파일들을 받아놓고 세팅해놓자.</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org220248b" class="outline-3">
+<h3 id="org220248b">wd blue m.2 2280 ssd 1tb를 오프라인으로 중고로 구입했는데 sata(b+m key) 였다. agx는 pcie 타입(m key)이다. 삽질..</h3>
+<div class="outline-text-3" id="text-org220248b">
+<p>
+휴대용 ssd 로 써야겠다.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org344b03c" class="outline-3">
+<h3 id="org344b03c">쿠팡에서 sn750 m.2 2280 nvme 를 구입. 내일 <span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-12 목&gt; </span></span> 도착 예정</h3>
+</div>
+
+<div id="outline-container-org034651a" class="outline-3">
+<h3 id="org034651a">당근마켓에서 15,000원에 <b>usb</b> 키보드와 마우스 구입</h3>
+</div>
+
+<div id="outline-container-org895e591" class="outline-3">
+<h3 id="org895e591"><span class="done DONE">DONE</span> 모니터는 내일 사무실에서 가져와야겠다. 차로 출근할 것</h3>
+</div>
+
+<div id="outline-container-org2bade2f" class="outline-3">
+<h3 id="org2bade2f">Install JetPack SDK</h3>
+<div class="outline-text-3" id="text-org2bade2f">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">&lt;2020-11-11 수 22:00&gt;</span></span>
+</p>
+<ul class="org-ul">
+<li><a href="https://developer.nvidia.com/embedded/jetpack">https://developer.nvidia.com/embedded/jetpack</a>
+host computer 에서 sdkmanager 를 통해 nvidia 클라우드에서 데이터를 다운받아 설치, 관리한다.</li>
+<li><a href="https://docs.nvidia.com/sdk-manager/install-with-sdkm-jetson/index.html">https://docs.nvidia.com/sdk-manager/install-with-sdkm-jetson/index.html</a>
+sdkmanager doc</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4b33705" class="outline-2">
+<h2 id="org4b33705"><span class="section-number-2">4</span> <span class="done DONE">DONE</span> JETSON 언박싱 하려했으나 모니터 케이블 부재로 하루 연기</h2>
+</div>
+
+<div id="outline-container-orgaab4b93" class="outline-2">
+<h2 id="orgaab4b93"><span class="section-number-2">5</span> BOOT by nvme ssd</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+restore when failed to boot by nvme ssd
+</p>
+</div>
+
+<div id="outline-container-org6dd0caf" class="outline-3">
+<h3 id="org6dd0caf">prerequisites</h3>
+<div class="outline-text-3" id="text-org6dd0caf">
+<p>
+installed total files by sdkmanager on host
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6e31401" class="outline-3">
+<h3 id="org6e31401">restore eMMC first</h3>
+<div class="outline-text-3" id="text-org6e31401">
+<p>
+<i>home/srolisp/nvidia/nvidia<sub>sdk</sub>/JetPack<sub>4.4.1</sub><sub>Linux</sub><sub>JETSON</sub><sub>AGX</sub><sub>XAVIER</sub>/Linux<sub>for</sub><sub>Tegra</sub></i>
+./flash.sh jetson-xavier mmcblk0p1
+emmc로 부팅해서 인스톨 과정을 마치자.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3f2d9a3" class="outline-3">
+<h3 id="org3f2d9a3">partition 설정 및 booting에 필요한 파일을 카피하자(on xavier)</h3>
+<div class="outline-text-3" id="text-org3f2d9a3">
+<p>
+fck -f /dev/nvme0n1p1 이나 desktop에서 disks에서 check, repair를
+해서 점검하자.  dd후에 검사할 것. nvme에 문제가 있는지 resize2fs가
+안되는 경우가 있다. 이유는 잘 모르겠다. 검사해서 발견된 부분들을
+수정하면 정상적으로 된긴 한다. 찝찝하지만..
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">sudo parted /dev/nvme0n1
+(parted) mklabel gpt
+(parted) mkpart primary 2048s 100%
+(parted) quit
+
+sudo mkfs.ext4 /dev/nvme0n1p1
+# partuuid 부분 카피
+sudo blkid /dev/nvme0n1p1
+
+
+# clone emmc to ssd
+sudo dd if=/dev/mmcblk0p1 of=/dev/nvme0n1p1
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7bb9fa9" class="outline-3">
+<h3 id="org7bb9fa9">xavier에 flash</h3>
+<div class="outline-text-3" id="text-org7bb9fa9">
+<p>
+usb를 호스트와 연결시키고 리커버리모드로 부팅. 
+<i>home/srolisp/nvidia/nvidia<sub>sdk</sub>/JetPack<sub>4.4.1</sub><sub>Linux</sub><sub>JETSON</sub><sub>AGX</sub><sub>XAVIER</sub>/Linux<sub>for</sub><sub>Tegra</sub>/bootlader</i>
+</p>
+
+<p>
+./l4t-rootfs-uuid.txt에 partuuid 저장
+a1e2fd49-a401-45ef-a4a6-11df35fd6884
+</p>
+
+<p>
+<i>home/srolisp/nvidia/nvidia<sub>sdk</sub>/JetPack<sub>4.4.1</sub><sub>Linux</sub><sub>JETSON</sub><sub>AGX</sub><sub>XAVIER</sub>/Linux<sub>for</sub><sub>Tegra</sub></i>
+sudo ./flash.sh jetson-xavier external
+</p>
+</div>
+</div>
+
+<div id="outline-container-org00113e5" class="outline-3">
+<h3 id="org00113e5">용량을 되돌려놓자(on xavier)</h3>
+<div class="outline-text-3" id="text-org00113e5">
+<p>
+flash후 성공적으로 리부팅되면
+resize2fs /dev/nvme0n1p1 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2a97f00" class="outline-3">
+<h3 id="org2a97f00">sdk 설치</h3>
+<div class="outline-text-3" id="text-org2a97f00">
+<p>
+호스트와 usb로 연결 및 인터넷 연결, 부팅시켜놓고 호스트에서
+sdkmanager실행후 3단계에서 OS flash부분은 제외시키고 sdk부분 설치
+진행한다. 192.168.55.1에 연결 할 id와 password를 입력하라고
+나오는데 앞서 인스톨 과정에 입력한 걸 넣는다.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org14083d3" class="outline-3">
+<h3 id="org14083d3">sudo apt-get update on xavier</h3>
+<div class="outline-text-3" id="text-org14083d3">
+<p>
+sudo apt-get upgrade는 하지말자. 버전 호환성 문제가 있는지
+머리아파진다.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2020-11-08 일 11:00</p>
+<p class="author">Author: srolisp</p>
+<p class="date">Created: 2020-12-01 화 16:46</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
