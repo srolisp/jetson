@@ -1,0 +1,134 @@
+ #+title: JETSON AGX XAVIER installation
+#+subtitle: team <symphony>
+#+date: <2020-11-08 Sun 11:00>
+#+tags: python, bash, elisp, lisp, jetson
+#+property: header-args:bash :results verbatim
+#+property: header-args:elisp :exports both
+#+property: header-args:ipython :session jetson :tangle "jetson-install.py" :exports both
+#+OPTIONS: toc:1
+#+options: num:1 
+#+author: srolisp
+
+* 준비물 
+
+** DONE BOOT LOADER 용 usb 메리모 스틱
+   wd nvme sata 1tb
+   
+** DONE 외부저장 장치
+   wd nvme m.2 pcie 1tb
+   
+** TODO JETSON용 주변기기
+   - [X] 모니터
+   - [X] 유선 키보드
+   - [X] 마우스
+   - [ ] 카메라
+     + sony x3000r 기존것 활용가능한지 구글링
+     + 로지텍 c920 알아보는중
+   - [X] M.2 SSD NVME 1TB or higher
+  
+* 외부저장 장치에 ubuntu 설치하기
+  JETSON 을 구동시키려면 일단 우분투 시스템이 필요하다. 맥북에
+  부트캠프로 윈도우즈와 같이 쓰고 있는데 용량부족으로 트리플 구동은
+  힘들다. 파티션도 다시 설정해야하고 각각 쓰기 위한 용량이
+  타이트하다. 대안으로 외장 하드에 우분투를 설치하고 인스톨하려고
+  시도해본다.
+
+** boot loader 용 usb 만들기
+<2020-11-09 Mon 16:00>
+돌아다니던 usb들이 도통 안보여서 다이소에서 16GB SANDISK USB 를 5,000원에 구입
+- https://www.balena.io/etcher/
+- iso 파일 선택(18.04까지 지원해서 이버전(lts)으로 다운받아 놨다)
+- boot loader 로 쓸 usb 선택
+- flash!
+
+** Install ubuntu 18.04.5 on external hard drive using boot loader efi
+<2020-11-10 Tue 00:00>-<2020-11-11 Wed 00:30>
+쉬운게 없는듯. 잘 읽고 그대로 하면 된다. 안된다고 다른 문서 찾아가 반복하길 여러번.
+이문서대로 설치하되 안되는 부분은 아래 참조해서 하면 잘 설치될 것이다!
+- https://florisvanbreugel.wordpress.com/2018/03/23/installing-ubuntu-on-an-external-ssd-drive-on-a-macbook/
+  
+  링크따라 순서대로 설치하면 된다.
+- external drive 파티션 나눌때 잘 몰라서 bootloader용 파티션은 1gb로 잡고 나머지는 EmptyDrive로 설정
+- linux-swap 파티션 사이즈는 8192mb로 잡았다.
+- wifi 설정은 나중에 해도 된다.
+- sudo chroot /mnt 이후에 grub-mkstandalone 에서 에러가 난다.
+  apt써서 패키지 설치하려면 인터넷이 연결되있어야한다. 지금쯤 ubuntu는 설치된 상태니 우측 상단 아이콘 클릭해서 와이파이 잡힌걸 선택해서 연결한다.
+  /mnt가 루트인 상태에서 sudo apt update 후
+  sudo apt install grub-efi-amd64-bin 실행했다.
+  그후에 grub-mkstandalone -o boot.efi -d usr/lib/grub/x86_64-efi -O x86_64-efi --compress=xz boot/grub/grub.cfg
+
+
+* DONE 우분투에 JETSON 설치파일들을 받아놓고 세팅해놓자.
+
+** wd blue m.2 2280 ssd 1tb를 오프라인으로 중고로 구입했는데 sata(b+m key) 였다. agx는 pcie 타입(m key)이다. 삽질..
+   휴대용 ssd 로 써야겠다.
+
+** 쿠팡에서 sn750 m.2 2280 nvme 를 구입. 내일 <2020-11-12 Thu> 도착 예정
+
+** 당근마켓에서 15,000원에 *usb* 키보드와 마우스 구입
+
+** DONE 모니터는 내일 사무실에서 가져와야겠다. 차로 출근할 것
+
+** Install JetPack SDK
+   <2020-11-11 Wed 22:00>
+   - https://developer.nvidia.com/embedded/jetpack
+     host computer 에서 sdkmanager 를 통해 nvidia 클라우드에서 데이터를 다운받아 설치, 관리한다.
+   - https://docs.nvidia.com/sdk-manager/install-with-sdkm-jetson/index.html
+     sdkmanager doc
+
+* DONE JETSON 언박싱 하려했으나 모니터 케이블 부재로 하루 연기
+
+* restore when failed to boot by nvme ssd
+
+** prerequisites
+   installed total files by sdkmanager on host
+
+** restore eMMC first
+   /home/srolisp/nvidia/nvidia_sdk/JetPack_4.4.1_Linux_JETSON_AGX_XAVIER/Linux_for_Tegra/
+   ./flash.sh jetson-xavier mmcblk0p1
+   emmc로 부팅해서 인스톨 과정을 마치자.
+   
+** partition 설정 및 booting에 필요한 파일을 카피하자(on xavier)
+   fck -f /dev/nvme0n1p1 이나 desktop에서 disks에서 check, repair를
+   해서 점검하자.  dd후에 검사할 것. nvme에 문제가 있는지 resize2fs가
+   안되는 경우가 있다. 이유는 잘 모르겠다. 검사해서 발견된 부분들을
+   수정하면 정상적으로 된긴 한다. 찝찝하지만..
+   #+begin_src bash
+     sudo parted /dev/nvme0n1
+     (parted) mklabel gpt
+     (parted) mkpart primary 2048s 100%
+     (parted) quit
+
+     sudo mkfs.ext4 /dev/nvme0n1p1
+     # partuuid 부분 카피
+     sudo blkid /dev/nvme0n1p1
+
+
+     # clone emmc to ssd
+     sudo dd if=/dev/mmcblk0p1 of=/dev/nvme0n1p1
+   #+end_src
+
+** xavier에 flash
+   usb를 호스트와 연결시키고 리커버리모드로 부팅. 
+   /home/srolisp/nvidia/nvidia_sdk/JetPack_4.4.1_Linux_JETSON_AGX_XAVIER/Linux_for_Tegra/bootlader/
+
+   ./l4t-rootfs-uuid.txt에 partuuid 저장
+   a1e2fd49-a401-45ef-a4a6-11df35fd6884
+
+   /home/srolisp/nvidia/nvidia_sdk/JetPack_4.4.1_Linux_JETSON_AGX_XAVIER/Linux_for_Tegra/
+   sudo ./flash.sh jetson-xavier external
+
+** 용량을 되돌려놓자(on xavier)
+   flash후 성공적으로 리부팅되면
+   resize2fs /dev/nvme0n1p1 
+
+** sdk 설치
+   호스트와 usb로 연결 및 인터넷 연결, 부팅시켜놓고 호스트에서
+   sdkmanager실행후 3단계에서 OS flash부분은 제외시키고 sdk부분 설치
+   진행한다. 192.168.55.1에 연결 할 id와 password를 입력하라고
+   나오는데 앞서 인스톨 과정에 입력한 걸 넣는다.
+
+** sudo apt-get update on xavier
+   sudo apt-get upgrade는 하지말자. 버전 호환성 문제가 있는지
+   머리아파진다.
+
